@@ -1,0 +1,45 @@
+* coreos 起步，在window上测试开发集群配置初步
+coreos在window的集群配置目的是学习与架构测试。
+
+** 所需软件
++ virtual box
++ vagrant
++ coreos-vagrant
++ mingw
++ coreos virtualbox镜像
+ vagrant需要ssh登录coreos 因此需要安装mingw和其中msys包
+
+ 国内网络情况不好。因此需要下载镜像手工添加到vagrant.
+ 从林帆的“coreos实践之路”图书网站下载即可。
+    
+** 操作步骤
+** 软件下载以及安装
+   + http://download.virtualbox.org/virtualbox/5.1.10/VirtualBox-5.1.10-112026-Win.exe
+   + https://releases.hashicorp.com/vagrant/1.9.1/vagrant_1.9.1.msi
+   + git clone https://github.com/coreos/coreos-vagrant.git
+   + http://downloads.sourceforge.net/project/mingw/Installer/mingw-get-setup.exe?r=&ts=1481247964&use_mirror=jaist
+   需要注意mingw下载后需要配置需要安装的软件包。需要安装mssys相关包。vagrant用到其中的ssh
+     
+*** 导入virtualbox镜像到vagrant
+    vagrant box add --name coreos-alpha(这里的名称-后边的后缀要和配置文件一致) coreos_production_vagrant.box
+*** 获取集群标识
+    curl https://discovery.etcd.io/new
+
+    其实直接用浏览器打开也可以 。然后把浏览器中的内容保存后续用于修改core_vagrant的配置文件
+***  修改coreos-vagrant配置文件
+    config.rb需要修改 ：
+
+    + $num_instances=6(启动的coreos实例数量)
+    + $update_channel='stable'(这里的名称要和前边导入的vbox镜像后缀名一致)
+
+   user_data需要修改
+
+   +discovery: <集群标识URL地址> （前边获取的集群标识）
+*** 执行vagrant up 启动集群
+*** 执行vagrant halt 强制停止集群
+*** 执行vagrant ssh  sever_id登录至服务器
+*** 关于bat脚本
+    run_cluster.bat 启动coreos的脚本需要修改vagrant exe路径
+    stop_cluster.bat 强制关闭coreos的脚本需要修改vagrang exe路径
+    ssh.bat登录到服务器 单参数 server_id
+    server_id就是启动服务的时候core-01,core-02这些信息
