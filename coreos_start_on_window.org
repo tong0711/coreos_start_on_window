@@ -32,9 +32,9 @@ coreos在window的集群配置目的是学习与架构测试。
     + $num_instances=6(启动的coreos实例数量)
     + $update_channel='stable'(这里的名称要和前边导入的vbox镜像后缀名一致)
 
-   user_data需要修改
+   user_data需要修改：
 
-   +discovery: <集群标识URL地址> （前边获取的集群标识）
+   + discovery: <集群标识URL地址> （前边获取的集群标识）
 *** 执行vagrant up 启动集群
 *** 执行vagrant halt 强制停止集群
 *** 执行vagrant ssh  sever_id登录至服务器
